@@ -1,0 +1,13 @@
+{
+    "name": "aegeansea/kf-saas",
+    "description": "kf saas api",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "mjs",
+            "email": "mjs2198522@126.com"
+        }
+    ],
+    "require": {}
+}
