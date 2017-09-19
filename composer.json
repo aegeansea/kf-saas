@@ -9,5 +9,13 @@
             "email": "mjs2198522@126.com"
         }
     ],
-    "require": {}
+    "require": {
+        "guzzlehttp/guzzle": "^6.3",
+        "php": ">=5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Aegeansea\\KfSaas\\": "src"
+        }
+    }
 }
