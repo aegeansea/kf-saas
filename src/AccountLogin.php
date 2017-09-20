@@ -3,6 +3,7 @@
 namespace Aegeansea\KfSaas;
 
 use Aegeansea\KfSaas\Traits\HasHttpRequest;
+use GuzzleHttp\Exception\ClientException;
 
 class AccountLogin
 {
@@ -24,7 +25,11 @@ class AccountLogin
         ];
 
         $url = $host . $uri;
-        $result = $this->post($url, $params);
+        try {
+            $result = $this->post($url, $params);
+        } catch (ClientException $e) {
+            $result = $this->unwrapResponse($e->getResponse());
+        }
 
         return $result;
     }
