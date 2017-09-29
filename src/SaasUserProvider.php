@@ -2,6 +2,7 @@
 
 namespace Aegeansea\KfSaas;
 
+use App\Caches\UserCache;
 use Illuminate\Contracts\Auth\UserProvider;
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
 
@@ -22,9 +23,7 @@ class SaasUserProvider implements UserProvider
      */
     public function retrieveById($identifier)
     {
-        list($id6d, $company_id) = explode('.', $identifier);
-        $worker = (new Worker())->worker($id6d, $company_id);
-        return $this->getGenericUser($worker['server_response']);
+        return $this->getGenericUser(json_decode(UserCache::init($identifier)->get()));
     }
 
     /**
@@ -36,7 +35,7 @@ class SaasUserProvider implements UserProvider
      */
     public function retrieveByToken($identifier, $token)
     {
-        //
+        return $this->getGenericUser(json_decode(UserCache::init($identifier)->get()));
     }
 
     /**
@@ -102,6 +101,12 @@ class SaasUserProvider implements UserProvider
     public function validateCredentials(UserContract $user, array $credentials)
     {
         $this->user = $user;
-        return isset($user->status_code) && $user->status_code == 201;
+        if (isset($user->status_code) && $user->status_code == 201) {
+            $identifier = $user->id;
+            UserCache::init($identifier)->set(json_encode($user->toArray()));
+            return true;
+        }
+
+        return false;
     }
 }
