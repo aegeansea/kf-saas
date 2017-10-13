@@ -4,8 +4,9 @@ namespace Aegeansea\KfSaas;
 
 
 use Illuminate\Contracts\Auth\Authenticatable as UserContract;
+use Illuminate\Contracts\Support\Arrayable;
 
-class GenericUser implements UserContract
+class GenericUser implements UserContract, Arrayable
 {
     /**
      * All of the user's attributes.
