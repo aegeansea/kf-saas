@@ -23,7 +23,9 @@ class SaasUserProvider implements UserProvider {
 	 * @return \Illuminate\Contracts\Auth\Authenticatable|null
 	 */
 	public function retrieveById( $identifier ) {
-		return $this->getGenericUser( json_decode( UserCache::init( $identifier )->get() ) );
+		$user = UserCache::init( $identifier )->get();
+
+		return $user ? $this->getGenericUser( json_decode( $user ) ) : null;
 	}
 
 	/**
