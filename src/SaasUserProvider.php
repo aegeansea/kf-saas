@@ -133,4 +133,24 @@ class SaasUserProvider implements UserProvider {
 
 		return false;
 	}
+
+	/**
+	 * Retrieve a user by the given saas token.
+	 *
+	 * @param  string token
+	 *
+	 * @return \Illuminate\Contracts\Auth\Authenticatable|null
+	 */
+	public function retrieveBySaasToken( $token ) {
+		$result = ( new TokenLogin() )->login( $token );
+		if ( $result['server_response'] && $result['server_response']['status_code'] == 201 ) {
+			$id6d                                 = $result['server_response']['id6d'];
+			$company_id                           = $result['server_response']['company_id'];
+			$worker                               = ( new Worker() )->worker( $id6d, $company_id );
+			$worker['server_response']['id']      = $id6d . '.' . $company_id;
+			$worker['server_response']['company'] = $result['server_response'];
+
+			return $this->getGenericUser( $worker['server_response'] );
+		}
+	}
 }
