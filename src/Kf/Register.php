@@ -1,6 +1,6 @@
 <?php
 
-namespace Aegeansea\KfSaas;
+namespace Aegeansea\KfSaas\Kf;
 
 use Aegeansea\KfSaas\Traits\HasHttpRequest;
 use GuzzleHttp\Exception\ClientException;
@@ -24,7 +24,8 @@ class Register {
 			'fromour'      => $fromour,
 		];
 
-		$key = md5($token.implode(array_values(sort($params)),''));
+		ksort($params);
+		$key = md5($token.implode($params,''));
 		$url = $host . $uri . '?key=' . $key;
 		try {
 			$result = $this->post( $url, $params );
